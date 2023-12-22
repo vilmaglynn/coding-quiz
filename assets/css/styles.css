@@ -85,9 +85,12 @@ li:nth-child(odd) {
   position: absolute;
   top: 10px;
   right: 10px;
+<<<<<<< HEAD
   font-size: 50px;
   font-weight: bolder;
   color: white;
   background-color: darkblue;
   padding: 10px;
+=======
+>>>>>>> e293664222b5c9c7a0caa12a9cc0253ed36a9b54
 }
