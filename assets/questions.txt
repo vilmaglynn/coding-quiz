@@ -1,0 +1,99 @@
+Question 1:
+What is JavaScript primarily used for?
+
+A. Styling web pages
+B. Creating database tables
+C. Enhancing interactivity on websites
+D. Managing server-side operations
+
+Answer: C. Enhancing interactivity on websites
+
+Question 2:
+What is the difference between let, const, and var when declaring variables in JavaScript?
+
+A. They are interchangeable and can be used in any context
+B. let and const have block scope, while var has function scope
+C. let and var are constants, while const is a variable
+D. They are different syntaxes for the same variable declaration
+
+Answer: B. let and const have block scope, while var has function scope
+
+Question 3:
+What does the term "callback" refer to in JavaScript?
+
+A. A function passed as an argument to another function, to be executed later
+B. A built-in JavaScript method
+C. A variable storing multiple values
+D. An error in the code
+
+Answer: A. A function passed as an argument to another function, to be executed later
+
+Question 4:
+What is the purpose of the JSON.parse() method in JavaScript?
+
+A. Converting a string to a JavaScript object
+B. Parsing HTML code
+C. Creating a new JSON object
+D. Displaying a message in the console
+
+Answer: A. Converting a string to a JavaScript object
+
+Question 5:
+Which statement is true about the "this" keyword in JavaScript?
+
+A. It always refers to the global object
+B. It refers to the object the function is a property of
+C. It can only be used inside arrow functions
+D. It is used to declare variables
+
+Answer: B. It refers to the object the function is a property of
+
+Question 6:
+What is the purpose of the JavaScript try...catch statement?
+
+A. To declare a variable
+B. To create a loop
+C. To handle exceptions and errors
+D. To define a function
+
+Answer: C. To handle exceptions and errors
+
+Question 7:
+What is the significance of the "async" keyword in JavaScript?
+
+A. It defines a variable as asynchronous
+B. It marks a function as asynchronous, allowing the use of await
+C. It sets a timeout for code execution
+D. It prevents the execution of code
+
+Answer: B. It marks a function as asynchronous, allowing the use of await
+
+Question 8:
+What is the purpose of the JavaScript localStorage object?
+
+A. Storing data permanently on the server
+B. Storing data temporarily on the client's browser
+C. Manipulating the DOM structure
+D. Executing AJAX requests
+
+Answer: B. Storing data temporarily on the client's browser
+
+Question 9:
+What does the term "AJAX" stand for in JavaScript development?
+
+A. Asynchronous JavaScript and XML
+B. Advanced JavaScript and XML
+C. Asynchronous JSON and XHTML
+D. Automated JavaScript and XML
+
+Answer: A. Asynchronous JavaScript and XML
+
+Question 10:
+What is the purpose of the JavaScript Promise object?
+
+A. To define variables with constant values
+B. To represent a value that might be available now, or in the future, or never
+C. To create loops in asynchronous code
+D. To handle synchronous operations
+
+Answer: B. To represent a value that might be available now, or in the future, or never
