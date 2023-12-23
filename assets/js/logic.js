@@ -31,7 +31,7 @@ let lettersInChosenWord = [];
 let blanksLetters = [];
 
 // Array of words the user will guess
-const words = ["constiable","array", "modulus", "object", "function", "string", "boolean"];
+// const words = ["constiable","array", "modulus", "object", "function", "string", "boolean"];
 
 // The init function is called when the page loads 
 function init() {
@@ -49,6 +49,7 @@ startScreen.classList.add('hide');
   // Prevents start button from being clicked when round is in progress
 //   startButton.disabled = true;
 //   renderBlanks()
+renderQuestion()
   startTimer()
 
 }
@@ -94,18 +95,56 @@ function startTimer() {
 }
 
 // Creates blanks on screen
-function renderBlanks() {
-  // Randomly picks word from words array
-  chosenWord = words[Math.floor(Math.random() * words.length)];
-  lettersInChosenWord = chosenWord.split("");
-  numBlanks = lettersInChosenWord.length;
-  blanksLetters = []
-  // Uses loop to push blanks to blankLetters array
-  for (let i = 0; i < numBlanks; i++) {
-    blanksLetters.push("_");
-  }
-  // Converts blankLetters array into a string and renders it on the screen
-  wordBlank.textContent = blanksLetters.join(" ")
+// function renderBlanks() {
+//   // Randomly picks word from words array
+//   chosenWord = words[Math.floor(Math.random() * words.length)];
+//   lettersInChosenWord = chosenWord.split("");
+//   numBlanks = lettersInChosenWord.length;
+//   blanksLetters = []
+//   // Uses loop to push blanks to blankLetters array
+//   for (let i = 0; i < numBlanks; i++) {
+//     blanksLetters.push("_");
+//   }
+//   // Converts blankLetters array into a string and renders it on the screen
+//   wordBlank.textContent = blanksLetters.join(" ")
+// }
+
+// Displays questions on screen
+function renderQuestion(){
+// Get the quiz container and other elements
+var quizContainer = document.getElementById('quiz-container');
+var questionElement = document.getElementById('question');
+var choicesElement = document.getElementById('choices');
+var submitBtn = document.getElementById('submitBtn');
+
+// Get a random index from the quizQuestions array
+var randomIndex = Math.floor(Math.random() * quizQuestions.length);
+
+// Get the random question object
+var randomQuestion = quizQuestions[randomIndex];
+
+// Display the random question
+questionElement.textContent = randomQuestion.question;
+
+// Display the choices as clickable buttons
+randomQuestion.choices.forEach(function(choice, index) {
+  var choiceBtn = document.createElement('button');
+  choiceBtn.textContent = choice;
+  choiceBtn.addEventListener('click', function() {
+    recordAnswer(choice);
+  });
+  choicesElement.appendChild(choiceBtn);
+});
+
+// Function to record the selected answer
+function recordAnswer(selectedChoice) {
+  // You can use 'selectedChoice' to store or process the selected answer
+  console.log("Selected Answer:", selectedChoice);
+
+  // Optionally, you can remove the buttons after the user selects an answer
+  choicesElement.innerHTML = "<p>Answer recorded!</p>";
+  submitBtn.disabled = true;
+}
 }
 
 // Updates win count on screen and sets win count to client storage
