@@ -1,251 +1,153 @@
-const scores = document.querySelector(".scores");
-const hide = document.querySelector(".hide");
-const choices = document.querySelector(".choices");
-const feedback = document.querySelector(".feedback");
+// Wait for the DOM to be fully loaded before executing the code
+document.addEventListener('DOMContentLoaded', function () {
+	// Get the necessary HTML elements
+	var startBtn = document.getElementById('start');
+	var questionTitle = document.getElementById('question-title');
+	var choicesContainer = document.getElementById('choices');
+	var timeElement = document.getElementById('time');
+	var finalScoreElement = document.getElementById('final-score');
+	var initialsInput = document.getElementById('initials');
+	var submitBtn = document.getElementById('submit');
+	var startScreen = document.getElementById('start-screen');
+	var questionsScreen = document.getElementById('questions');
+	var endScreen = document.getElementById('end-screen');
+	var feedbackElement = document.getElementById('feedback');
+  
+	// Quiz state variables
+	var currentQuestionIndex = 0;
+	var timeLeft = 60; // Initial time in seconds
+	var timer;
+  
+	// Event listener for the start button
+	startBtn.addEventListener('click', startQuiz);
+  
+	// Event listener for answer buttons (delegated to the choices container)
+	choicesContainer.addEventListener('click', function (event) {
+	  if (event.target.matches('button')) {
+		checkAnswer(event.target.textContent);
+	  }
+	});
+  
+	// Event listener for the submit button on the end screen
+	submitBtn.addEventListener('click', function () {
+	  saveScore();
+	});
+  
+	// Array to store quiz questions (assumed to be defined in questions.js)
+	var quizQuestions = getQuizQuestions();
+  
+	function startQuiz() {
+	  // Hide the start screen and show the questions screen
+	  startScreen.classList.add('hide');
+	  questionsScreen.classList.remove('hide');
+	
+  
+	  // Start the timer
+	  startTimer();
+  
+	  // Display the first question
+	  displayQuestion();
+	}
+  
+	function displayQuestion() {
+	  var currentQuestion = quizQuestions[currentQuestionIndex];
+  
+	  // Display the question title
+	  questionTitle.textContent = currentQuestion.question;
+  
+	  // Clear previous choices
+	  choicesContainer.innerHTML = '';
+  
+	  // Display answer choices
+	  currentQuestion.choices.forEach(function (choice) {
+		var choiceBtn = document.createElement('button');
+		choiceBtn.textContent = choice;
+		choicesContainer.appendChild(choiceBtn);
+	  });
+	}
+  
+	function checkAnswer(selectedChoice) {
+	  var currentQuestion = quizQuestions[currentQuestionIndex];
+  
+	  // Check if the selected choice is correct
+	  if (selectedChoice === currentQuestion.correctAnswer) {
+		// Correct answer, move to the next question
+		showFeedback('Correct!', 'green');
+		currentQuestionIndex++;
+		if (currentQuestionIndex < quizQuestions.length) {
+		  // Display the next question after a short delay
+		  setTimeout(displayQuestion, 1000);
+		} else {
+		  // End the quiz if all questions are answered
+		  endQuiz();
+		}
+	  } else {
+		// Incorrect answer, subtract time from the clock
+		showFeedback('Wrong!', 'red');
+		timeLeft -= 10; // You can adjust the penalty time as needed
+		currentQuestionIndex++;
+		// Check if time has run out
+		if (timeLeft <= 0) {
+		  endQuiz();
+		}
+	  }
+	}
+  
+	function startTimer() {
+	  // Update the timer every second
+	  timer = setInterval(function () {
+		timeLeft--;
+		timeElement.textContent = timeLeft;
+  
+		// Check if time has run out
+		if (timeLeft <= 0) {
+		  endQuiz();
+		}
+	  }, 1000);
+	}
+  
+	function endQuiz() {
+	  // Stop the timer
+	  clearInterval(timer);
+  
+	  // Hide the questions screen and show the end screen
+	  questionsScreen.classList.add('hide');
+	  endScreen.classList.remove('hide');
+  
+	  // Display the final score
+	  finalScoreElement.textContent = timeLeft;
+	}
+  
+	function showFeedback(message, color) {
+	  feedbackElement.textContent = message;
+	  feedbackElement.style.color = color;
+	  feedbackElement.classList.remove('hide');
+  
+	  // Hide the feedback after a short delay
+	  setTimeout(function () {
+		feedbackElement.classList.add('hide');
+	  }, 1000);
+	}
+  
+	function saveScore() {
+		var initials = initialsInput.value.trim();
 
-// let timerElement = document.getElementById("time");
-const timerElement = document.querySelector("#time");
-const startButton = document.querySelector("#start");
-const startScreen = document.querySelector("#start-screen");
-const questionTitle = document.querySelector("#question-title");
-const choicesid = document.querySelector("#choices");
-const finalScore = document.querySelector("#final-score");
-const submit = document.querySelector("#submit");
-
-// const wordBlank = document.querySelector(".word-blanks");
-// const win = document.querySelector(".win");
-// const lose = document.querySelector(".lose");
-// const timerElement = document.querySelector(".timer-count");
-// const startButton = document.querySelector(".start-button");
-
-let chosenWord = "";
-let numBlanks = 0;
-let winCounter = 0;
-let loseCounter = 0;
-let isWin = false;
-let timer;
-let timerCount;
-
-// Arrays used to create blanks and letters on screen
-let lettersInChosenWord = [];
-let blanksLetters = [];
-
-// Array of words the user will guess
-// const words = ["constiable","array", "modulus", "object", "function", "string", "boolean"];
-
-// The init function is called when the page loads 
-function init() {
-  getWins();
-  getlosses();
-}
-
-// The startGame function is called when the start button is clicked
-function startGame() {
-
-hide.style.display = "block";
-startScreen.classList.add('hide');
-  isWin = false;
-  timerCount = 60;
-  // Prevents start button from being clicked when round is in progress
-//   startButton.disabled = true;
-//   renderBlanks()
-renderQuestion()
-  startTimer()
-
-}
-
-// The winGame function is called when the win condition is met
-function winGame() {
-  wordBlank.textContent = "YOU WON!!!🏆 ";
-  winCounter++
-  startButton.disabled = false;
-  setWins()
-}
-
-// The loseGame function is called when timer reaches 0
-function loseGame() {
-  wordBlank.textContent = "GAME OVER";
-  loseCounter++
-  startButton.disabled = false;
-  setLosses()
-}
-
-// The setTimer function starts and stops the timer and triggers winGame() and loseGame()
-function startTimer() {
-  // Sets timer
-
-  timer = setInterval(function() {
-    timerCount--;
-    timerElement.textContent = timerCount;
-    if (timerCount >= 0) {
-      // Tests if win condition is met
-      if (isWin && timerCount > 0) {
-        // Clears interval and stops timer
-        clearInterval(timer);
-        winGame();
-      }
-    }
-    // Tests if time has run out
-    if (timerCount === 0) {
-      // Clears interval
-      clearInterval(timer);
-      loseGame();
-    }
-  }, 1000);
-}
-
-// Creates blanks on screen
-// function renderBlanks() {
-//   // Randomly picks word from words array
-//   chosenWord = words[Math.floor(Math.random() * words.length)];
-//   lettersInChosenWord = chosenWord.split("");
-//   numBlanks = lettersInChosenWord.length;
-//   blanksLetters = []
-//   // Uses loop to push blanks to blankLetters array
-//   for (let i = 0; i < numBlanks; i++) {
-//     blanksLetters.push("_");
-//   }
-//   // Converts blankLetters array into a string and renders it on the screen
-//   wordBlank.textContent = blanksLetters.join(" ")
-// }
-
-// Displays questions on screen
-function renderQuestion(){
-// Get the quiz container and other elements
-var quizContainer = document.getElementById('quiz-container');
-var questionElement = document.getElementById('question');
-var choicesElement = document.getElementById('choices');
-var submitBtn = document.getElementById('submitBtn');
-
-// Get a random index from the quizQuestions array
-var randomIndex = Math.floor(Math.random() * quizQuestions.length);
-
-// Get the random question object
-var randomQuestion = quizQuestions[randomIndex];
-
-// Display the random question
-questionElement.textContent = randomQuestion.question;
-
-// Display the choices as clickable buttons
-randomQuestion.choices.forEach(function(choice, index) {
-  var choiceBtn = document.createElement('button');
-  choiceBtn.textContent = choice;
-  choiceBtn.addEventListener('click', function() {
-    recordAnswer(choice);
+		// Validate initials
+		if (initials === '') {
+		  alert('Please enter your initials.');
+		  return;
+		}
+	  
+		// Get the existing scores from local storage or initialize an empty array
+		var scores = JSON.parse(localStorage.getItem('scores')) || [];
+	  
+		// Add the current score to the array
+		scores.push({ initials: initials, score: timeLeft });
+	  
+		// Save the updated scores array back to local storage
+		localStorage.setItem('scores', JSON.stringify(scores));
+	  
+		// Optional: Display a confirmation message to the user
+		alert('Score saved! Initials: ' + initials + ', Score: ' + timeLeft);
+	  }
   });
-  choicesElement.appendChild(choiceBtn);
-});
-
-// Function to record the selected answer
-function recordAnswer(selectedChoice) {
-  // You can use 'selectedChoice' to store or process the selected answer
-  console.log("Selected Answer:", selectedChoice);
-
-  // Optionally, you can remove the buttons after the user selects an answer
-  choicesElement.innerHTML = "<p>Answer recorded!</p>";
-  submitBtn.disabled = true;
-}
-}
-
-// Updates win count on screen and sets win count to client storage
-function setWins() {
-  win.textContent = winCounter;
-  localStorage.setItem("winCount", winCounter);
-}
-
-// Updates lose count on screen and sets lose count to client storage
-function setLosses() {
-  lose.textContent = loseCounter;
-  localStorage.setItem("loseCount", loseCounter);
-}
-
-// These functions are used by init
-function getWins() {
-  // Get stored value from client storage, if it exists
-  const storedWins = localStorage.getItem("winCount");
-  // If stored value doesn't exist, set counter to 0
-  if (storedWins === null) {
-    winCounter = 0;
-  } else {
-    // If a value is retrieved from client storage set the winCounter to that value
-    winCounter = storedWins;
-  }
-  //Render win count to page
-  win.textContent = winCounter;
-}
-
-function getlosses() {
-  const storedLosses = localStorage.getItem("loseCount");
-  if (storedLosses === null) {
-    loseCounter = 0;
-  } else {
-    loseCounter = storedLosses;
-  }
-  lose.textContent = loseCounter;
-}
-
-function checkWin() {
-  // If the word equals the blankLetters array when converted to string, set isWin to true
-  if (chosenWord === blanksLetters.join("")) {
-    // This value is used in the timer function to test if win condition is met
-    isWin = true;
-  }
-}
-
-// Tests if guessed letter is in word and renders it to the screen.
-function checkLetters(letter) {
-  let letterInWord = false;
-  for (let i = 0; i < numBlanks; i++) {
-    if (chosenWord[i] === letter) {
-      letterInWord = true;
-    }
-  }
-  if (letterInWord) {
-    for (let j = 0; j < numBlanks; j++) {
-      if (chosenWord[j] === letter) {
-        blanksLetters[j] = letter;
-      }
-    }
-    wordBlank.textContent = blanksLetters.join(" ");
-  }
-}
-
-// Attach event listener to document to listen for key event
-document.addEventListener("keydown", function(event) {
-  // If the count is zero, exit function
-  if (timerCount === 0) {
-    return;
-  }
-  // Convert all keys to lower case
-  const key = event.key.toLowerCase();
-  const alphabetNumericCharacters = "abcdefghijklmnopqrstuvwxyz0123456789 ".split("");
-  // Test if key pushed is letter
-  if (alphabetNumericCharacters.includes(key)) {
-    const letterGuessed = event.key;
-    checkLetters(letterGuessed)
-    checkWin();
-  }
-});
-
-// Attach event listener to start button to call startGame function on click
-startButton.addEventListener("click", startGame);
-
-// Calls init() so that it fires when page opened
-init();
-
-// Bonus: Add reset button
-const resetButton = document.querySelector(".reset-button");
-
-function resetGame() {
-  // Resets win and loss counts
-  winCounter = 0;
-  loseCounter = 0;
-  // Renders win and loss counts and sets them into client storage
-  setWins()
-  setLosses()
-}
-// // Attaches event listener to button
-// resetButton.addEventListener("click", resetGame);
-
-// Attaches event listener to button
-resetButton.addEventListener("click", resetGame);

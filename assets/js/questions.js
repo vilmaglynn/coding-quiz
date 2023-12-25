@@ -1,4 +1,5 @@
-let quizQuestions = [
+function getQuizQuestions() {
+	return[
 	{
 	  question: "What is JavaScript primarily used for?",
 	  choices: ["Styling web pages", "Creating database tables", "Enhancing interactivity on websites", " Managing server-side operations"],
@@ -14,7 +15,7 @@ let quizQuestions = [
 		"let and var are constants, while const is a variable",
 		"They are different syntaxes for the same variable declaration"],
 		
-		correctAnswer: "B. let and const have block scope, while var has function scope"
+		correctAnswer: "let and const have block scope, while var has function scope"
 		
 	}, 
 	{
@@ -27,7 +28,7 @@ choices:
 "A variable storing multiple values",
 "n error in the code"],
 
-correctAnswer: ["A. A function passed as an argument to another function, to be executed later"]
+correctAnswer: "A function passed as an argument to another function, to be executed later"
 	},
 
 	{
@@ -40,7 +41,7 @@ correctAnswer: ["A. A function passed as an argument to another function, to be 
 		"Creating a new JSON object",
 		"Displaying a message in the console"],
 		
-		correctAnswer: "A. Converting a string to a JavaScript object	"
+		correctAnswer: "Converting a string to a JavaScript object"
 	},
 
 	{
@@ -53,7 +54,8 @@ choices:
 "It can only be used inside arrow functions",
 "It is used to declare variables"],
 
-correctAnswer: "B. It refers to the object the function is a property of"
+correctAnswer: "It refers to the object the function is a property of"
 	}
 
-  ];
+  ]
+};
