@@ -18,15 +18,16 @@ Create a code quiz that contains the following requirements:
 * The quiz should end when all questions are answered or the timer reaches 0.
 
   * When the game ends, it should display their score and give the user the ability to save their initials and their score
+  
 
 ## Usage
 
 Link to deployed page
-https://vilmaglynn.github.io/bootstrap-portfolio/
+https://vilmaglynn.github.io/coding-quiz/
 
 
 
-![portfolio](./images/screenshot.png)
+![portfolio](./assets/coding-quiz-image.png)
 
 ## License
 MIT License
